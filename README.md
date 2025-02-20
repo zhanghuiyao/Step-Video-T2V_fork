@@ -96,6 +96,7 @@ The following table shows the requirements for running Step-Video-T2V model (bat
 
 |     Model    |  height/width/frame |  Peak GPU Memory | 50 steps w flash-attn | 50 steps w/o flash-attn |
 |:------------:|:------------:|:------------:|:------------:|:------------:|
+| Step-Video-T2V   |        768px768px204f      |  78.55 GB | 860 s | 1437 s |
 | Step-Video-T2V   |        544px992px204f      |  77.64 GB | 743 s | 1232 s |
 | Step-Video-T2V   |        544px992px136f      |  72.48 GB | 408 s | 605 s |
 

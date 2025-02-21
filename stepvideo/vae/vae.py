@@ -122,8 +122,6 @@ def base_conv3d_channel_last(x, conv_layer, residual=None):
         else:
             out_nhwc = residual
 
-        import pdb;pdb.set_trace()
-
         assert B == 1
         outs = []
         for i in range(chunks):

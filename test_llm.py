@@ -62,6 +62,8 @@ if __name__ == "__main__":
     )
 
 
+    import pdb;pdb.set_trace()
+
     transformer_dtype = torch.bfloat16
     prompt_embeds = prompt_embeds.to(transformer_dtype)
     prompt_attention_mask = prompt_attention_mask.to(transformer_dtype)

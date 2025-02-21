@@ -79,9 +79,9 @@ if __name__ == "__main__":
         # print(f"{prompt_attention_mask.shape=}")
 
         transformer_dtype = self.transformer.dtype
-        prompt_embeds = torch.Tensor(np.random.randn(2, 320, 6144), transformer_dtype)
-        prompt_attention_mask = torch.Tensor(np.random.randn(2, 397), transformer_dtype)
-        prompt_embeds_2 = torch.Tensor(np.random.randn(2, 77, 1024), transformer_dtype)
+        prompt_embeds = torch.Tensor(np.random.randn(2, 320, 6144)).to(transformer_dtype).to("cuda:0")
+        prompt_attention_mask = torch.Tensor(np.ones((2, 397))).to(transformer_dtype).to("cuda:0")
+        prompt_embeds_2 = torch.Tensor(np.random.randn(2, 77, 1024)).to(transformer_dtype).to("cuda:0")
 
 
         # 4. Prepare timesteps

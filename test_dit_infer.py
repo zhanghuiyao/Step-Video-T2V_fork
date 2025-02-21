@@ -143,14 +143,23 @@ if __name__ == "__main__":
         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
         timestep = t.broadcast_to((latent_model_input.shape[0],)).to(latent_model_input.dtype)
         
+
         # numpy save
-        np.save("./latent_model_input.npy", latent_model_input.detach().cpu().to(torch.float32).numpy())
-        np.save("./timestep.npy", timestep.detach().cpu().to(torch.float32).numpy())
-        np.save("./prompt_embeds.npy", prompt_embeds.detach().cpu().to(torch.float32).numpy())
-        np.save("./prompt_attention_mask.npy", prompt_attention_mask.detach().cpu().to(torch.float32).numpy())
-        np.save("./prompt_embeds_2.npy", prompt_embeds_2.detach().cpu().to(torch.float32).numpy())
-        print(f"tensors original dtype is: {[x.dtype for x in (latent_model_input, timestep, prompt_embeds, prompt_attention_mask, prompt_embeds_2)]}")
-        return
+        # np.save("./latent_model_input.npy", latent_model_input.detach().cpu().to(torch.float32).numpy())
+        # np.save("./timestep.npy", timestep.detach().cpu().to(torch.float32).numpy())
+        # np.save("./prompt_embeds.npy", prompt_embeds.detach().cpu().to(torch.float32).numpy())
+        # np.save("./prompt_attention_mask.npy", prompt_attention_mask.detach().cpu().to(torch.float32).numpy())
+        # np.save("./prompt_embeds_2.npy", prompt_embeds_2.detach().cpu().to(torch.float32).numpy())
+        # print(f"tensors original dtype is: {[x.dtype for x in (latent_model_input, timestep, prompt_embeds, prompt_attention_mask, prompt_embeds_2)]}")
+        # return
+        
+        # numpy load
+        latent_model_input = torch.tensor(np.load("./latent_model_input.npy")).to(torch.bfloat16).to("cuda:0")
+        timestep = torch.tensor(np.load("./timestep.npy")).to(torch.bfloat16).to("cuda:0")
+        prompt_embeds = torch.tensor(np.load("./prompt_embeds.npy")).to(torch.bfloat16).to("cuda:0")
+        prompt_attention_mask = torch.tensor(np.load("./prompt_attention_mask.npy")).to(torch.bfloat16).to("cuda:0")
+        prompt_embeds_2 = torch.tensor(np.load("./prompt_embeds_2.npy")).to(torch.bfloat16).to("cuda:0")
+
 
         noise_pred = self.transformer(
             hidden_states=latent_model_input,
@@ -160,6 +169,12 @@ if __name__ == "__main__":
             encoder_hidden_states_2=prompt_embeds_2,
             return_dict=False,
         )
+
+        # numpy save noise predict
+        np.save("./noise_pred.npy", noise_pred.detach().cpu().to(torch.float32).numpy())
+
+        import pdb;pdb.set_trace()
+
         # perform guidance
         if do_classifier_free_guidance:
             noise_pred_text, noise_pred_uncond = noise_pred.chunk(2)

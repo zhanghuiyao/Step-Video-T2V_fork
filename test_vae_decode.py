@@ -17,10 +17,10 @@ from api.call_remote_server import CaptionPipeline, StepVaePipeline
 if __name__ == "__main__":
 
     args = parse_args()
-    initialize_parall_group(ring_degree=args.ring_degree, ulysses_degree=args.ulysses_degree)
+    # initialize_parall_group(ring_degree=args.ring_degree, ulysses_degree=args.ulysses_degree)
     
-    local_rank = get_parallel_group().local_rank
-    device = torch.device(f"cuda:{local_rank}")
+    # local_rank = get_parallel_group().local_rank
+    device = torch.device("cuda:0")
     
     setup_seed(args.seed)
         

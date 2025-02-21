@@ -25,7 +25,7 @@ if __name__ == "__main__":
     import time
     print("building pipeline...")
     _t = time.time()
-    pipeline = StepVideoPipeline.from_pretrained(args.model_dir).to(torch.bfloat16)
+    pipeline = StepVideoPipeline.from_pretrained(args.model_dir).to(torch.bfloat16).to(device)
     print(f"build pipeline success, time cost: {(time.time()-_t)/60:.2f} min")
 
     pipeline.setup_api(

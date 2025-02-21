@@ -70,7 +70,7 @@ class MultiQueryAttention(nn.Module):
         cu_seqlens: Optional[torch.Tensor],
         max_seq_len: Optional[torch.Tensor],
     ):
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
         seqlen, bsz, dim = x.shape
         xqkv = self.wqkv(x)
@@ -118,17 +118,21 @@ class MultiQueryAttention(nn.Module):
             output = rearrange(output, "b s h d -> s b (h d)").contiguous()
         
 
-            # debug
-            _mask = self.build_alibi_cache(xk.shape[1], xq.shape[2], xq.dtype, xq.device)[:, :, -xq.shape[1] :, :]
-            xq = xq.transpose(1, 2)   # b s h d -> b h s d
-            xk = xk.transpose(1, 2)
-            xv = xv.transpose(1, 2)
-            attn_output = torch.nn.functional.scaled_dot_product_attention(
-                xq, xk, xv, attn_mask=_mask
-            )
-            attn_output = attn_output.transpose(1, 2)
-        
-            import pdb;pdb.set_trace()
+
+            # # debug
+            # https://huggingface.co/stepfun-ai/Step-Audio-Chat/commit/aa82b184aa5ec627ef94545daa7a661711e83596#d2h-542184
+            # https://huggingface.co/stepfun-ai/Step-Audio-TTS-3B/blob/main/modeling_step1.py
+            #
+            # _mask = self.build_alibi_cache(xk.shape[1], xq.shape[2], xq.dtype, xq.device)[:, :, -xq.shape[1] :, :]
+            # xq = xq.transpose(1, 2)   # b s h d -> b h s d
+            # xk = xk.transpose(1, 2)
+            # xv = xv.transpose(1, 2)
+            # attn_output = torch.nn.functional.scaled_dot_product_attention(
+            #     xq, xk, xv, attn_mask=_mask
+            # )
+            # attn_output = attn_output.transpose(1, 2)
+            #
+            # import pdb;pdb.set_trace()
 
         else:
             xq, xk, xv = [
@@ -241,7 +245,7 @@ class TransformerBlock(nn.Module):
         max_seq_len: Optional[torch.Tensor],
     ):
         
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
         residual = self.attention.forward(
             self.attention_norm(x), mask,

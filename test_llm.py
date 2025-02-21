@@ -16,6 +16,7 @@ from api.call_remote_server import CaptionPipeline, StepVaePipeline
 if __name__ == "__main__":
     args = parse_args()
     args.llm_dir = "step_llm"
+    args.clip_dir = "hunyuan_clip"
 
     setup_seed(args.seed)
         

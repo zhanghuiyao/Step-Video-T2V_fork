@@ -116,6 +116,20 @@ class MultiQueryAttention(nn.Module):
                                       max_seq_len=max_seq_len)
             # reduce-scatter only support first dimention now
             output = rearrange(output, "b s h d -> s b (h d)").contiguous()
+        
+
+            # debug
+            _mask = self.build_alibi_cache(xk.shape[1], xq.shape[2], xq.dtype, xq.device)[:, :, -xq.shape[1] :, :]
+            q = q.transpose(1, 2)   # b s h d -> b h s d
+            k = k.transpose(1, 2)
+            v = v.transpose(1, 2)
+            attn_output = torch.nn.functional.scaled_dot_product_attention(
+                xq, xk, xv, attn_mask=_mask
+            )
+            attn_output = attn_output.transpose(1, 2)
+        
+            import pdb;pdb.set_trace()
+
         else:
             xq, xk, xv = [
                 rearrange(x, "b s ... -> s b ...").contiguous()
@@ -124,6 +138,33 @@ class MultiQueryAttention(nn.Module):
             output = self.core_attention(xq, xk, xv, mask)
         output = self.wo(output)
         return output
+
+
+    def build_alibi_cache(self, block_size, n_heads, dtype, device):
+        
+        import math
+
+        # get slopes
+        n = 2 ** math.floor(math.log2(n_heads))  # nearest 2**n to n_heads
+        m0 = 2.0 ** (-8.0 / n)
+        # 2^(-8/n), 2^(-8*2/n), 2^(-8*3/n), ...
+        slopes = torch.pow(m0, torch.arange(1, n + 1))
+        if n < n_heads:
+            m1 = 2.0 ** (-4.0 / n)
+            # 2^(-8/(2n)), 2^(-8*3/(2n)), 2^(-8*5/(2n)), ...
+            mm = torch.pow(m1, torch.arange(1, 1 + 2 * (n_heads - n), 2))
+            slopes = torch.cat([slopes, mm])
+        slopes = slopes.to(device)
+
+        tril = torch.tril(torch.ones(1, 1, block_size, block_size, device=device))
+
+        bias_rows = torch.arange(block_size, device=device).view(1, -1)
+        bias_cols = torch.arange(block_size, device=device).view(-1, 1)
+        bias = -torch.sqrt(bias_cols - bias_rows)
+        bias = bias.view(1, block_size, block_size) * slopes.view(-1, 1, 1)
+        bias = bias.masked_fill(tril == 0, float("-inf"))
+
+        return bias.type(dtype)
 
 
 

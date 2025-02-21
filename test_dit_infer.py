@@ -16,7 +16,7 @@ from typing import Optional, Union, List
 if __name__ == "__main__":
     args = parse_args()
     
-    initialize_parall_group(ring_degree=args.ring_degree, ulysses_degree=args.ulysses_degree)
+    # initialize_parall_group(ring_degree=args.ring_degree, ulysses_degree=args.ulysses_degree)
     
     device = torch.device("cuda:0")
 

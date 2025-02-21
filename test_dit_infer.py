@@ -149,6 +149,7 @@ if __name__ == "__main__":
         np.save("./prompt_embeds.npy", prompt_embeds.detach().cpu().to(torch.float32).numpy())
         np.save("./prompt_attention_mask.npy", prompt_attention_mask.detach().cpu().to(torch.float32).numpy())
         np.save("./prompt_embeds_2.npy", prompt_embeds_2.detach().cpu().to(torch.float32).numpy())
+        print(f"tensors original dtype is: {[x.dtype for x in (latent_model_input, timestep, prompt_embeds, prompt_attention_mask, prompt_embeds_2)]}")
         return
 
         noise_pred = self.transformer(

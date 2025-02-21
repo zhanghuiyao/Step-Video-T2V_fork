@@ -120,9 +120,9 @@ class MultiQueryAttention(nn.Module):
 
             # debug
             _mask = self.build_alibi_cache(xk.shape[1], xq.shape[2], xq.dtype, xq.device)[:, :, -xq.shape[1] :, :]
-            q = q.transpose(1, 2)   # b s h d -> b h s d
-            k = k.transpose(1, 2)
-            v = v.transpose(1, 2)
+            xq = xq.transpose(1, 2)   # b s h d -> b h s d
+            xk = xk.transpose(1, 2)
+            xv = xv.transpose(1, 2)
             attn_output = torch.nn.functional.scaled_dot_product_attention(
                 xq, xk, xv, attn_mask=_mask
             )

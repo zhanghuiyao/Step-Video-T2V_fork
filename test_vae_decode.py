@@ -47,10 +47,11 @@ if __name__ == "__main__":
 
         return samples
 
-    latent = np.random.randn(1, 36, 64, 34, 62)
     
-    np.save("results/vae_input_numpy.npy", latent)
-    print(f"save success, results/vae_input_numpy.npy, {latent.shape=}")
+    # latent = np.random.randn(1, 36, 64, 34, 62)
+    # np.save("results/vae_input_numpy.npy", latent)
+    # print(f"save success, results/vae_input_numpy.npy, {latent.shape=}")
+    latent = np.load("results/vae_input_numpy.npy")
 
     x = torch.Tensor(latent)
     out = decode_vae(x)

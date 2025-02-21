@@ -809,6 +809,8 @@ class VideoDecoder(nn.Module):
 
     @torch.inference_mode()
     def forward(self, z, is_init=True):
+        import pdb;pdb.set_trace()
+
         z = rearrange(z, "b t c h w -> b c t h w")
 
         h = self.conv_in(z, is_init=is_init)

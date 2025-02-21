@@ -244,9 +244,6 @@ class TransformerBlock(nn.Module):
         cu_seqlens: Optional[torch.Tensor],
         max_seq_len: Optional[torch.Tensor],
     ):
-        
-        # import pdb;pdb.set_trace()
-
         residual = self.attention.forward(
             self.attention_norm(x), mask,
             cu_seqlens, max_seq_len
@@ -254,6 +251,9 @@ class TransformerBlock(nn.Module):
         h = x + residual
         ffn_res = self.feed_forward.forward(self.ffn_norm(h))
         out = h + ffn_res
+
+        import pdb;pdb.set_trace()
+
         return out
 
 

@@ -197,6 +197,9 @@ class TransformerBlock(nn.Module):
         cu_seqlens: Optional[torch.Tensor],
         max_seq_len: Optional[torch.Tensor],
     ):
+        
+        import pdb;pdb.set_trace()
+
         residual = self.attention.forward(
             self.attention_norm(x), mask,
             cu_seqlens, max_seq_len
@@ -238,8 +241,6 @@ class Transformer(nn.Module):
 
         if max_seq_len is not None and not isinstance(max_seq_len, torch.Tensor):
             max_seq_len = torch.tensor(max_seq_len, dtype=torch.int32, device="cpu")
-
-        import pdb;pdb.set_trace()
 
         for lid, layer in enumerate(self.layers):
             hidden_states = layer(

@@ -99,8 +99,10 @@ if __name__ == "__main__":
             width,
             num_frames,
             torch.bfloat16,
-            latents,
+            device=device,
+            latents=latents,
         )
+
         print("="* 100 + "\n" + f"Step2. get latent success.")
         print(f"{latents.shape=}")
 

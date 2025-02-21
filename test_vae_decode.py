@@ -54,9 +54,8 @@ if __name__ == "__main__":
 
     x = torch.Tensor(latent)
     out = decode_vae(x)
-    out = out.detach().cpu().numpy()
 
-    np.save("results/vae_output_numpy.npy", out)
+    np.save("results/vae_output_numpy.npy", out.detach().to(torch.float32).cpu().numpy())
     print(f"save success, results/test_video_numpy.npy, {out.shape=}")
     
     # save video

@@ -15,7 +15,8 @@ from api.call_remote_server import CaptionPipeline, StepVaePipeline
 
 if __name__ == "__main__":
     args = parse_args()
-    
+    args.llm_dir = "step_llm"
+
     setup_seed(args.seed)
         
     # pipeline = StepVideoPipeline.from_pretrained(args.model_dir).to(ms.bfloat16)

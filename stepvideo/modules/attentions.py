@@ -7,7 +7,7 @@ try:
 except ImportError:
     xFuserLongContextAttention = None
     
-    
+
 class Attention(nn.Module):
     def __init__(self):
         super().__init__()
@@ -16,6 +16,12 @@ class Attention(nn.Module):
         if attn_type == 'torch':
             return self.torch_attn_func
         elif attn_type == 'parallel':
+            
+            # zhy_test
+            from stepvideo.parallel import get_sequence_parallel_world_size
+            if get_sequence_parallel_world_size() <= 1:
+                return self.torch_attn_func
+            
             return self.parallel_attn_func
         else:
             raise Exception('Not supported attention type...')

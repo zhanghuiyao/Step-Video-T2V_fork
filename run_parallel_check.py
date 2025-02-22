@@ -165,8 +165,8 @@ if __name__ == "__main__":
             return StepVideoPipelineOutput(video=video)
         
 
-    pipeline.new_call = new_call_fn
-
+    import types
+    pipeline.new_call = types.MethodType(new_call_fn, pipeline)
 
     prompt = args.prompt
     videos = pipeline.new_call(

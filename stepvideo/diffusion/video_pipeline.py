@@ -273,6 +273,8 @@ class StepVideoPipeline(DiffusionPipeline):
             latents,
         )
 
+
+
         # 7. Denoising loop
         with self.progress_bar(total=num_inference_steps) as progress_bar:
             for i, t in enumerate(self.scheduler.timesteps):

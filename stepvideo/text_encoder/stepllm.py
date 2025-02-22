@@ -252,7 +252,7 @@ class TransformerBlock(nn.Module):
         ffn_res = self.feed_forward.forward(self.ffn_norm(h))
         out = h + ffn_res
 
-        import pdb;pdb.set_trace()
+        # import pdb;pdb.set_trace()
 
         return out
 

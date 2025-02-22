@@ -68,7 +68,4 @@ def parallel_forward(fn_):
         output = fn_(_, hidden_states, *args, **kwargs)
         return output
 
-    if is_distribute():
-        return wrapTheFunction
-    else:
-        return identityTheFunction
+    return wrapTheFunction

@@ -95,7 +95,7 @@ if __name__ == "__main__":
         )
 
         ################# 1 #############################################################
-        np.save(f"latent_model_input_rank{torch.distributed.get_rank()}.npy", latent_model_input.detach().cpu().to(torch.float32).numpy())
+        np.save(f"latents_rank{torch.distributed.get_rank()}.npy", latents.detach().cpu().to(torch.float32).numpy())
         np.save(f"prompt_embeds_rank{torch.distributed.get_rank()}.npy", prompt_embeds.detach().cpu().to(torch.float32).numpy())
         np.save(f"prompt_attention_mask_rank{torch.distributed.get_rank()}.npy", prompt_attention_mask.detach().cpu().to(torch.float32).numpy())
         np.save(f"prompt_embeds_2_rank{torch.distributed.get_rank()}.npy", prompt_embeds_2.detach().cpu().to(torch.float32).numpy())
